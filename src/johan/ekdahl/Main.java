@@ -1,21 +1,29 @@
 package johan.ekdahl;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         int n = 500;
         String[] inputArray = new String[500];
-        List<Lines> validLines = new ArrayList<Lines>();
+        List<Lines> validLines = new ArrayList<>();
 
-        Scanner scan = new Scanner(System.in);
 
-        for(int i = 0; i < n; i++){
-            inputArray[i] = scan.nextLine();
+
+        try {
+            BufferedReader BF = new BufferedReader(new FileReader("input/text.txt"));
+            String line;
+            int i = 0;
+            while ((line = BF.readLine()) != null) {
+                inputArray[i++] = line;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
 
 
@@ -43,42 +51,37 @@ public class Main {
         }
 
 
-        for (int i = 0; i < validLines.size(); i++) {
-            if(validLines.get(i).x1 == validLines.get(i).x2){
-                for (int j = Math.min(validLines.get(i).y1, validLines.get(i).y2); j < (Math.max(validLines.get(i).y1, validLines.get(i).y2)+1); j++) {
-                    matrix[validLines.get(i).x2][j] += 1;
+        for (Lines validLine : validLines) {
+            if (validLine.x1 == validLine.x2) {
+                for (int j = Math.min(validLine.y1, validLine.y2); j < (Math.max(validLine.y1, validLine.y2) + 1); j++) {
+                    matrix[validLine.x2][j] += 1;
                 }
-            }
-            else if(validLines.get(i).y1 == validLines.get(i).y2){
-                for (int j = Math.min(validLines.get(i).x1, validLines.get(i).x2); j < (Math.max(validLines.get(i).x1, validLines.get(i).x2)+1); j++) {
-                    matrix[j][validLines.get(i).y2] += 1;
+            } else if (validLine.y1 == validLine.y2) {
+                for (int j = Math.min(validLine.x1, validLine.x2); j < (Math.max(validLine.x1, validLine.x2) + 1); j++) {
+                    matrix[j][validLine.y2] += 1;
                 }
-            }
-            else{
-                if (validLines.get(i).x1 < validLines.get(i).x2 && validLines.get(i).y1 < validLines.get(i).y2) {
-                    int k = validLines.get(i).y1;
-                    for (int j = validLines.get(i).x1; j < (validLines.get(i).x2+1); j++){
+            } else {
+                if (validLine.x1 < validLine.x2 && validLine.y1 < validLine.y2) {
+                    int k = validLine.y1;
+                    for (int j = validLine.x1; j < (validLine.x2 + 1); j++) {
                         matrix[j][k] += 1;
                         k++;
                     }
-                }
-                else if (validLines.get(i).x1 > validLines.get(i).x2 && validLines.get(i).y1 > validLines.get(i).y2) {
-                    int k = validLines.get(i).y1;
-                    for (int j = validLines.get(i).x1; j > (validLines.get(i).x2-1); j--){
+                } else if (validLine.x1 > validLine.x2 && validLine.y1 > validLine.y2) {
+                    int k = validLine.y1;
+                    for (int j = validLine.x1; j > (validLine.x2 - 1); j--) {
                         matrix[j][k] += 1;
                         k--;
                     }
-                }
-                else if (validLines.get(i).x1 > validLines.get(i).x2 && validLines.get(i).y1 < validLines.get(i).y2) {
-                    int k = validLines.get(i).y1;
-                    for (int j = validLines.get(i).x1; j > (validLines.get(i).x2-1); j--){
+                } else if (validLine.x1 > validLine.x2 && validLine.y1 < validLine.y2) {
+                    int k = validLine.y1;
+                    for (int j = validLine.x1; j > (validLine.x2 - 1); j--) {
                         matrix[j][k] += 1;
                         k++;
                     }
-                }
-                else if (validLines.get(i).x1 < validLines.get(i).x2 && validLines.get(i).y1 > validLines.get(i).y2) {
-                    int k = validLines.get(i).y1;
-                    for (int j = validLines.get(i).x1; j < (validLines.get(i).x2+1); j++){
+                } else if (validLine.x1 < validLine.x2 && validLine.y1 > validLine.y2) {
+                    int k = validLine.y1;
+                    for (int j = validLine.x1; j < (validLine.x2 + 1); j++) {
                         matrix[j][k] += 1;
                         k--;
                     }
@@ -87,7 +90,6 @@ public class Main {
 
             }
         }
-
 
         int counter = 0;
         for (int i = 0; i < 1000; i++) {
@@ -101,10 +103,6 @@ public class Main {
         System.out.println(counter);
 
     }
-
-
-
-
 
     }
 
